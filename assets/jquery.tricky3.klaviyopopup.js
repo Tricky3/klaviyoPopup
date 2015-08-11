@@ -51,7 +51,7 @@
                     for (var i = 0; i<settings.CloseSelectors.length; i++) {
                         var element = $(settings.CloseSelectors[i]);
                         element.click(function (e) {
-                            CMP.Hide(true);
+                            KP.Hide(true);
                             e.stopPropagation();
                             return false;
                         });
@@ -60,7 +60,7 @@
                     for (var i = 0; i < settings.ShowSelectors.length; i++) {
                         var element = $(settings.ShowSelectors[i]);
                         element.click(function (e) {
-                            CMP.Show(true);
+                            KP.Show(true);
                             e.stopPropagation();
                             return false;
                         });
@@ -69,13 +69,13 @@
                     $(document).keydown(function (e) {
                         keycode = e == null ? event.keyCode : e.which;
                         if (keycode == 27) {
-                            CMP.Hide(true);
+                            KP.Hide(true);
                         }
                     });
 
                     _Globs.MainWrapper.click(function () {
                         if ($(this).hasClass('modalize')) {
-                            CMP.Hide(true);
+                            KP.Hide(true);
                         }
                     });
 

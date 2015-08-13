@@ -21,7 +21,8 @@
                     OnError:function(){},
                     OnDisplayed:function(){},
                     OnClosed:function(){},
-                    OnFormSubmitted:function(){}
+                    OnFormSubmitted:function(){},
+                    BeforeSubmit:function(){}
                 },
                 MessageWrapperSelectors:{
                     Success:'.success_message',
@@ -181,6 +182,7 @@
                 },
                 InitAjaxSubmit: function () {
                     _Globs.KForm.submit(function(e) {
+                        KP.CallBackHandler.BeforeSubmit();
                         var url = $(this).attr(settings.AjaxSubmitAttr) + '?callback=?';
                         var formData = $(this).serialize();
                         $.get(url, formData, KP.AjaxFormSubmitCallBack);
@@ -235,6 +237,9 @@
                 },
                 OnSuccess:function(data){
                     settings.CallBacks.OnSuccess(data, _Globs.MainWrapper);
+                },
+                BeforeSubmit:function(){
+                    settings.CallBacks.BeforeSubmit();
                 }
             };
 

@@ -13,6 +13,7 @@
                 InnerWrapper: '.modal',
                 SignupKey: 'signup',
                 HidePopupOnSuccess:true,
+                HidePopupOnSuccessTimeout:5000,
                 ShowAlertMessage:true,
                 AjaxSubmitAttr:'data-ajax-submit',
                 BValidatorOptions:{ singleError: true },
@@ -25,8 +26,8 @@
                     BeforeSubmit:function(){}
                 },
                 MessageWrapperSelectors:{
-                    Success:'.success_message',
-                    Error:'.error_message'
+                    Success:'.klaviyo_messages .success_message',
+                    Error:'.klaviyo_messages .error_message'
                 },
                 Messages:{
                     Success:'Thank you!'
@@ -172,7 +173,6 @@
                         KP.CallBackHandler.OnDisplayed();
                         KP.InitBValidator();
                         KP.InitAjaxSubmit();
-
                     }, delay);
                 },
                 InitBValidator: function () {
@@ -183,9 +183,12 @@
                 InitAjaxSubmit: function () {
                     _Globs.KForm.submit(function(e) {
                         KP.CallBackHandler.BeforeSubmit();
-                        var url = $(this).attr(settings.AjaxSubmitAttr) + '?callback=?';
-                        var formData = $(this).serialize();
-                        $.get(url, formData, KP.AjaxFormSubmitCallBack);
+                        var form = $(this);
+                        var url = form.attr(settings.AjaxSubmitAttr);
+                        var utcOffset = (new Date).getTimezoneOffset() / -60;
+                        $('.timeOffset', form).length ? $('.timeOffset', form).val(utcOffset) : form.append('<input type="hidden" value="'+ utcOffset +'" class="timeOffset klaviyo-field" name="$timezone_offset"/>');
+                        var formData = form.find('.klaviyo-field').serialize();
+                        $.post(url, formData, KP.AjaxFormSubmitCallBack);
                         KP.CallBackHandler.OnFormSubmitted();
                         e.stopPropagation();
                         return false;
@@ -195,18 +198,21 @@
                     if (responseData.success) {
                         KP.UserHasSignedUp = true;
                         KP.SaveJsonToCookie(settings.CookieName, _Globs.CookiesValues.HasSubmitted, '', '', '', 365);
-                        $(_Globs.MainWrapper, settings.MessageWrapperSelectors).append(settings.Messages.Success).show();
+                        var successMessageWrapper = $(settings.MessageWrapperSelectors.Success, _Globs.MainWrapper);
+                        successMessageWrapper.append(settings.Messages.Success).css('display','block');
                         KP.CallBackHandler.OnSuccess(responseData);
                         if(settings.HidePopupOnSuccess){
-                            KP.Hide(false);    
+                            setTimeout(function(){
+                                KP.Hide(false); 
+                            }, settings.HidePopupOnSuccessTimeout);
                         }
                     }else{
-                        var errorMessageWrapper = $(_Globs.MainWrapper, settings.MessageWrapperSelectors);
+                        var errorMessageWrapper = $(settings.MessageWrapperSelectors.Error, _Globs.MainWrapper);
                         $(responseData.errors).each(function(){
                             errorMessageWrapper.append('<p>'+this+'</p>');
                         });
 
-                        errorMessageWrapper.show();
+                        errorMessageWrapper.css('display','block');
                         KP.CallBackHandler.OnError(responseData);
                     }
                 },

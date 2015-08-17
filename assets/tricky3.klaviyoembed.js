@@ -2,9 +2,12 @@ $(document).ready(function(){
 	$('.klaviyo-embed').each(function(){
 		var wrapper = $(this);
 		$('form', wrapper).submit(function(e){
-          var url = $(this).attr('data-ajax-submit') + '?callback=?';
-          var formData = $(this).serialize();
-          $.get(url, formData, function(data){
+		  var form = $(this);
+          var url = form.attr('data-ajax-submit');
+          var utcOffset = (new Date).getTimezoneOffset() / -60;
+          $('.timeOffset', form).length ? $('.timeOffset', form).val(utcOffset) : form.append('<input type="hidden" value="'+ utcOffset +'" class="timeOffset klaviyo-field" name="$timezone_offset"/>');
+          var formData = $(this).find('.klaviyo-field').serialize();
+          $.post(url, formData, function(data){
             KlaviyoEmbedFormCallBacks.ProcessResponse(data, wrapper);
           });
           

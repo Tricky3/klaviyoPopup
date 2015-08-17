@@ -8,9 +8,9 @@
           <fieldset>
             <legend>{{ settings.signup_title }}</legend>
             <label for="k_id_email">Email:</label><br>
-			<input type="email" name="email" id="k_id_email" placeholder="Your Email Address" {% if customer %} value="{{ customer.email }}"{% endif %} required/><br>
+			<input class="klaviyo-field" type="email" name="email" id="k_id_email" placeholder="Your Email Address" {% if customer %} value="{{ customer.email }}"{% endif %} required/><br>
             <input type="submit" value="{{ settings.signup_submit_text }}" class="awesome">
-			<input type="hidden" name="g" value="[KlaviyoListId]">
+			<input type="hidden" name="g" value="[KlaviyoListId]" class="klaviyo-field">
           </fieldset>
 		  <div class="klaviyo_messages">
 			<div class="success_message" style="display:none;"></div>

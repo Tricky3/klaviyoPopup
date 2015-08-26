@@ -22,7 +22,7 @@ var KlaviyoEmbedFormCallBacks = {
 		responseData.success ? KlaviyoEmbedFormCallBacks.Success(responseData, wrapper) : KlaviyoEmbedFormCallBacks.Error(responseData, wrapper);
 	},
 	Success:function(data, wrapper){
-		T3Core.TrackUserSignUp(wrapper);
+		T3Core.TrackUserSignUpEmbed(wrapper);
         $('.klaviyo_messages .success_message', wrapper).text('Thank you!').show();
 	},
 	Error:function(data, wrapper){

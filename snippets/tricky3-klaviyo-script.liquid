@@ -1,63 +1,70 @@
 <script type="text/javascript">
-    {% if template == 'cart' %}
-      var showPopupOnThisPage = false;
-    {% else %}
-      var showPopupOnThisPage = true;
-    {% endif %}
+  {% if template == 'cart' %}
+    var showPopupOnThisPage = false;
+  {% else %}
+    var showPopupOnThisPage = true;
+  {% endif %}
     $(window).load(function() {
-	if({{ settings.show_popup_on_mobile_device }} || !T3Core.IsMobileDevice()){
-		  var options = {
-			{% assign first_visit = settings.modal_signup_first %}
-			{% assign total_visits = settings.modal_signup_total %}
-			Visits:[{{ first_visit }}{% for i in (1..total_visits) %}{% capture next_visit %}{{ first_visit | plus: i }}{% endcapture %},{{ next_visit }}{% endfor %}],
-			Delay:{{ settings.modal_signup_delay_time }},
-			PageViewNumber:{{ settings.modal_signup_page_view }},
-			ShowPopupOnCurrentPage:showPopupOnThisPage,
-			CloseSelectors:['.popupClose'],
-			ShowSelectors:['.popupTrigger'],
-			CookieName: 'KlaviyoPopup', //default cookie name..do not add this option if you want the default..
-			SessionCookieName: 'KlaviyoPopupSession', // default session cookie name..do not add this option if you want the default..
-			InnerWrapper: '.modal',
-			SignupKey: 'signup',
-			HidePopupOnSuccess:true, // this will hide the popup when sign up is successful..
-			HidePopupOnSuccessTimeout:5000 // timeout to hide the popup after a successful signup..
-			ShowAlertMessage:true, // this will show an alert if sign up is successful..
-			AjaxSubmitAttr:'data-ajax-submit', // the form ajax submit url attribute..
-			BValidatorOptions:{ singleError: true }, // bvalidator options..
-			CallBacks:{
-				OnSuccess:function(data, wrapper){
-					T3Core.TrackUserSignUp(KlaviyoPopupTrackers.Category, KlaviyoPopupTrackers.Actions.Success, data.Message);
-				},
-				OnError:function(data){
-					T3Core.TrackUserSignUp(KlaviyoPopupTrackers.Category, KlaviyoPopupTrackers.Actions.Error, data.Message);
-				},
-				OnDisplayed:function(){
-					T3Core.TrackUserSignUp(KlaviyoPopupTrackers.Category, KlaviyoPopupTrackers.Actions.OnShow);
-				},
-				OnClosed:function(trackEventIfUserHasNotSignedUp){
-				    if(trackEventIfUserHasNotSignedUp){
-					 T3Core.TrackUserSignUp(KlaviyoPopupTrackers.Category, KlaviyoPopupTrackers.Actions.ClosedWithoutSignup);
-				    }
-				},
-				OnFormSubmitted:function(){
-					T3Core.TrackUserSignUp(KlaviyoPopupTrackers.Category, KlaviyoPopupTrackers.Actions.FormSubmitted);
-				}
-			},
-			MessageWrapperSelectors:{
-				Success:'.success_message', 
-				Error:'.error_message'
-			},
-			Messages:{
-				Success:'Thank you!' // success message..
-			}
-		  };
-
-		  $('.modalHolder').KlaviyoPopup(options);
-	  }
+      if ({{ settings.show_popup_on_mobile_device }} || !T3Core.IsMobileDevice()) {
+        var options = {
+          {% assign first_visit = settings.modal_signup_first %}
+          {% assign total_visits = settings.modal_signup_total %}
+          Visits: [{{ first_visit }}{% for i in (1..total_visits) %}{% capture next_visit %}{{ first_visit | plus: i }}{% endcapture %},{{ next_visit }}{% endfor %}],
+          Delay: {{ settings.modal_signup_delay_time }},
+          PageViewNumber: {{ settings.modal_signup_page_view }},
+          ShowPopupOnCurrentPage: showPopupOnThisPage,
+          CloseSelectors: ['.popupClose'],
+          ShowSelectors: ['.popupTrigger'],
+          CookieName: 'KlaviyoPopup', //default cookie name..do not add this option if you want the default..
+          SessionCookieName: 'KlaviyoPopupSession', // default session cookie name..do not add this option if you want the default..
+          InnerWrapper: '.modal',
+          SignupKey: 'signup',
+          HidePopupOnSuccess: true, // this will hide the popup when sign up is successful..
+          HidePopupOnSuccessTimeout: 5000, // timeout to hide the popup after a successful signup..
+          ShowAlertMessage: true, // this will show an alert if sign up is successful..
+          AjaxSubmitAttr: 'data-ajax-submit', // the form ajax submit url attribute..
+          BValidatorOptions: {
+            // bvalidator options..
+            singleError: true
+          },
+          CallBacks: {
+            OnSuccess: function(data, wrapper) {
+              T3Core.TrackUserSignUp(KlaviyoPopupTrackers.Category, KlaviyoPopupTrackers.Actions.Success, data.Message);
+            },
+            OnError: function(data) {
+              T3Core.TrackUserSignUp(KlaviyoPopupTrackers.Category, KlaviyoPopupTrackers.Actions.Error, data.Message);
+            },
+            OnDisplayed: function() {
+              T3Core.TrackUserSignUp(KlaviyoPopupTrackers.Category, KlaviyoPopupTrackers.Actions.OnShow);
+            },
+            OnClosed: function(trackEventIfUserHasNotSignedUp) {
+              if (trackEventIfUserHasNotSignedUp) {
+                T3Core.TrackUserSignUp(KlaviyoPopupTrackers.Category, KlaviyoPopupTrackers.Actions.ClosedWithoutSignup);
+              }
+            },
+            OnFormSubmitted: function() {
+              T3Core.TrackUserSignUp(KlaviyoPopupTrackers.Category, KlaviyoPopupTrackers.Actions.FormSubmitted);
+            }
+          },
+          MessageWrapperSelectors: {
+            Success: '.success_message',
+            Error: '.error_message'
+          },
+          Messages: {
+            Success: 'Thank you!' // success message..
+          }
+        };
+        $('.modalHolder').KlaviyoPopup(options);
+      }
     });
-	
-	var KlaviyoPopupTrackers = {
-		Category:"UserSignupKlaviyoPopup",
-		Actions:{ Success: "Success", Error:"Error", FormSubmitted:"FormSubmitted", OnShow:"Displayed", ClosedWithoutSignup:"ClosedWithoutSignup"}
-	};
+    var KlaviyoPopupTrackers = {
+      Category: "UserSignupKlaviyoPopup",
+      Actions: {
+        Success: "Success",
+        Error: "Error",
+        FormSubmitted: "FormSubmitted",
+        OnShow: "Displayed",
+        ClosedWithoutSignup: "ClosedWithoutSignup"
+      }
+    };
 </script>

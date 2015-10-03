@@ -1,8 +1,8 @@
+{{ 'jquery.bvalidator.js' | asset_url | script_tag }}
+{{ 'bvalidator.css' | asset_url | stylesheet_tag }}
+{{ 'tricky3.klaviyoembed.js' | asset_url | script_tag }}
 {% unless settings.modal_signup_first == '0' %}
-  {{ 'tricky3.core.js' | asset_url | script_tag }}
-  {{ 'jquery.bvalidator.js' | asset_url | script_tag }}
   {{ 'tricky3.klaviyopopup.js' | asset_url | script_tag }}
-  {{ 'bvalidator.css' | asset_url | stylesheet_tag }}
   {{ 'popupsignup.scss.css' | asset_url | stylesheet_tag }}
   {% include 'tricky3-klaviyo-popup' %}
   {% include 'tricky3-klaviyo-script' %}

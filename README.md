@@ -22,11 +22,4 @@ __Includes:__
   * "Success"
   * "Error"
   
-* Field(s) validations:
-  * Klaviyo Modal Popup Signup will make use of "bvalidator plugin" if it has been added on the page. Ref theme.liquid.
-  * If it has not been added, then to enable form validation, you will need to add "validate" property to the form element.
-  * If it has been added, these data attributes should be added to the field(s) that you want to validate:
-	* data-bvalidator="required,email"
-	* data-bvalidator-msg="The email is required" //Optional if you want to configure error message that will be displayed by bValidator plugin
-	* For more info: http://bojanmauser.from.hr/bvalidator/#inputerrmsgs
-	
+

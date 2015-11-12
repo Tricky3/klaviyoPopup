@@ -25,6 +25,11 @@ var KlaviyoEmbedFormCallBacks = {
 	},
 	Success:function(data, wrapper){
 		T3Core.TrackUserSignUpEmbed(wrapper);
+		T3Core.TrackFacebookLeadSignup({
+          currency:  wrapper.attr('data-shopcurrency'), 
+          value: 0.00,
+          content_name: wrapper.attr('data-ga-action')
+        });
         $('.klaviyo_messages .success_message', wrapper).text('Thank you!').show();
 	},
 	Error:function(data, wrapper){

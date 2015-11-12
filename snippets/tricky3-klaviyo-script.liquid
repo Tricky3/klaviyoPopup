@@ -30,7 +30,7 @@
           CallBacks: {
             OnSuccess: function(data, wrapper) {
               T3Core.TrackUserSignUp(KlaviyoPopupTrackers.Category, KlaviyoPopupTrackers.Actions.Success, data.Message);
-			  T3Core.TrackFacebookLeadSignup({
+			  T3Core.TrackFacebookCompleteRegistration({
                 currency: '{{ shop.currency }}', 
                 value: 0.00,
                 content_name: KlaviyoPopupTrackers.Category

@@ -8,6 +8,15 @@ $(document).ready(function(){
           var utcOffset = (new Date).getTimezoneOffset() / -60;
           $('.timeOffset', form).length ? $('.timeOffset', form).val(utcOffset) : form.append('<input type="hidden" value="'+ utcOffset +'" class="timeOffset klaviyo-field" name="$timezone_offset"/>');
           var formData = $(this).find('.klaviyo-field').serialize();
+          
+          var customPropertiesNames = $(this).find('.klaviyo-custom-property').map(function(){
+            return $(this).attr('name');
+          }).get();
+
+          if(customPropertiesNames.length){
+            formData += '&$fields='+ customPropertiesNames.join(',');
+          }
+
           if(form.data('bValidator').isValid()){
             $.post(url, formData, function(data){
               KlaviyoEmbedFormCallBacks.ProcessResponse(data, wrapper);

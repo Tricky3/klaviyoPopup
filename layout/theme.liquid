@@ -8,3 +8,27 @@
   {% include 'tricky3-klaviyo-popup' %}
   {% include 'tricky3-klaviyo-script' %}
 {% endunless %}
+{%- comment -%}
+Optional support for utm trackers: https://github.com/medius/utm_form
+For the trackers to work, it should always be below the forms html(embed and popup): 
+SNIPPET REF FOR POPUP: tricky3-klaviyo-popup
+SNIPPET REF FOR EMBED: tricky3-klaviyo-embed
+{%- endcomment -%}
+<script type="text/javascript">
+var _uf = _uf || {};
+_uf.domain = "{{ shop.domain }}";
+_uf.form_query_selector = 'form.track';
+_uf.utm_source_field           = "TRICKY_UTM_SOURCE";
+_uf.utm_medium_field           = "TRICKY_UTM_MEDIUM";
+_uf.utm_campaign_field         = "TRICKY_UTM_CAMPAIGN";
+_uf.utm_content_field          = "TRICKY_UTM_CONTENT";
+_uf.utm_term_field             = "TRICKY_UTM_TERM";
+_uf.initial_referrer_field     = "TRICKY_IREFERRER";
+_uf.last_referrer_field        = "TRICKY_LREFERRER";
+_uf.initial_landing_page_field = "TRICKY_ILANDING";
+_uf.visits_field               = "TRICKY_VISITS";
+</script>
+{%- comment -%}
+The plugin below is a slightly modified version of the original one to work with klaviyo plugin.
+{%- endcomment -%}
+{{ utm_form-1.0.2.js  | asset_url | script_tag }}

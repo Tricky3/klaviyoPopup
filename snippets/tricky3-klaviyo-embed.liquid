@@ -1,5 +1,5 @@
 <div class="klaviyo-embed" data-ga-category="UserSignup" data-ga-action="KlaviyoEmbedFormFooter">
-  <form action="//manage.kmail-lists.com/subscriptions/subscribe" data-ajax-submit="//manage.kmail-lists.com/ajax/subscriptions/subscribe" method="GET" target="_blank" class="validate">
+  <form action="//manage.kmail-lists.com/subscriptions/subscribe" data-ajax-submit="//manage.kmail-lists.com/ajax/subscriptions/subscribe" method="GET" target="_blank" class="validate track">
     <input type="email" name="email" class="email klaviyo-field" placeholder="Your Email Address"{% if customer %} value="{{ customer.email }}"{% endif %} data-error_message="Invalid email" required>
     <input type="submit" value="Sign Up" class="awesome">
     <div class="klaviyo_messages">

@@ -225,18 +225,18 @@ T3UtmForm = (function() {
       options = {};
     }
     this._utmParamsMap = {};
-    this._utmParamsMap.utm_source = options.utm_source_field || 'USOURCE';
-    this._utmParamsMap.utm_medium = options.utm_medium_field || 'UMEDIUM';
-    this._utmParamsMap.utm_campaign = options.utm_campaign_field || 'UCAMPAIGN';
-    this._utmParamsMap.utm_content = options.utm_content_field || 'UCONTENT';
-    this._utmParamsMap.utm_term = options.utm_term_field || 'UTERM';
+    this._utmParamsMap.utm_source = options.utm_source_field || 'TRICKY_UTM_SOURCE';
+    this._utmParamsMap.utm_medium = options.utm_medium_field || 'TRICKY_UTM_MEDIUM';
+    this._utmParamsMap.utm_campaign = options.utm_campaign_field || 'TRICKY_UTM_CAMPAIGN';
+    this._utmParamsMap.utm_content = options.utm_content_field || 'TRICKY_UTM_CONTENT';
+    this._utmParamsMap.utm_term = options.utm_term_field || 'TRICKY_UTM_TERM';
     this._additionalParamsMap = options.additional_params_map || {};
-    this._initialReferrerField = options.initial_referrer_field || 'IREFERRER';
-    this._lastReferrerField = options.last_referrer_field || 'LREFERRER';
-    this._initialLandingPageField = options.initial_landing_page_field || 'ILANDPAGE';
-    this._visitsField = options.visits_field || 'VISITS';
+    this._initialReferrerField = options.initial_referrer_field || 'TRICKY_IREFERRER';
+    this._lastReferrerField = options.last_referrer_field || 'TRICKY_LREFERRER';
+    this._initialLandingPageField = options.initial_landing_page_field || 'TRICKY_ILANDING';
+    this._visitsField = options.visits_field || 'TRICKY_VISITS';
     this._addToForm = options.add_to_form || 'all';
-    this._formQuerySelector = options.form_query_selector || 'form';
+    this._formQuerySelector = options.form_query_selector || 'form.track';
     this.utmCookie = new T3UtmCookie({
       domain: options.domain,
       sessionLength: options.sessionLength,

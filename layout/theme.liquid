@@ -1,29 +1,22 @@
-<script type="text/javascript" src="//tricky3.io/cdn/t3core/tricky3.core.js"></script>
-{% comment %}
-	You can single .js files as below or reference the pack which has everything packed together.
-	{{ 'tricky3.klaviyo.pack.min' | asset_url | script_tag }}
-{% endcomment %}
-{{ 'jquery.bvalidator.js' | asset_url | script_tag }}
-{{ 'bvalidator.css' | asset_url | stylesheet_tag }}
-{{ 'tricky3.utm_form.min' | asset_url | script_tag }}
-{{ 'tricky3.klaviyoembed.js' | asset_url | script_tag }}
-{% unless settings.modal_signup_first == '0' %}
-  {{ 'tricky3.klaviyopopup.js' | asset_url | script_tag }}
-  {{ 'popupsignup.scss.css' | asset_url | stylesheet_tag }}
-  {% include 'tricky3-klaviyo-popup' %}
-  {% include 'tricky3-klaviyo-script' %}
-{% endunless %}
+{%- comment -%}
+  for yo head
+{%- endcomment -%}
+<link rel="stylesheet" href="https://cdn.tricky3.io/klaviyoPopup/assets/bvalidator.css">
+{{ 'popupsignup.scss.css' | asset_url | stylesheet_tag }}
+{%- comment -%}
+  somewhere in the body
+{%- endcomment -%}
+{%- include 'tricky3-klaviyo-embed' -%}
+{%- comment -%}
+  end of the body
+{%- endcomment -%}
+{%- unless settings.modal_signup_first == '0' -%}
+  {%- include 'tricky3-klaviyo-popup' -%}
+  {%- include 'tricky3-klaviyo-script' -%}
+{%- endunless -%}
+<script src="https://cdn.tricky3.io/t3core/tricky3.core.js"></script>
+<script src="https://cdn.tricky3.io/klaviyoPopup/assets/tricky3.klaviyo.pack.min.js"></script>
 <script type="text/javascript">
-var _uf = _uf || {};
-_uf.domain = "{{ shop.domain }}";
-_uf.form_query_selector = 'form.track';
-_uf.utm_source_field           = "TRICKY_UTM_SOURCE";
-_uf.utm_medium_field           = "TRICKY_UTM_MEDIUM";
-_uf.utm_campaign_field         = "TRICKY_UTM_CAMPAIGN";
-_uf.utm_content_field          = "TRICKY_UTM_CONTENT";
-_uf.utm_term_field             = "TRICKY_UTM_TERM";
-_uf.initial_referrer_field     = "TRICKY_IREFERRER";
-_uf.last_referrer_field        = "TRICKY_LREFERRER";
-_uf.initial_landing_page_field = "TRICKY_ILANDING";
-_uf.visits_field               = "TRICKY_VISITS";
+  var _uf = _uf || {};
+  _uf.domain = "{{ shop.domain }}";
 </script>

@@ -1,7 +1,7 @@
-var UtmCookie;
+var T3UtmCookie;
 
-UtmCookie = (function() {
-  function UtmCookie(options) {
+T3UtmCookie = (function() {
+  function T3UtmCookie(options) {
     if (options == null) {
       options = {};
     }
@@ -24,7 +24,7 @@ UtmCookie = (function() {
     return;
   }
 
-  UtmCookie.prototype.createCookie = function(name, value, days, path, domain, secure) {
+  T3UtmCookie.prototype.createCookie = function(name, value, days, path, domain, secure) {
     var cookieDomain, cookieExpire, cookiePath, cookieSecure, date, expireDate;
     expireDate = null;
     if (days) {
@@ -39,7 +39,7 @@ UtmCookie = (function() {
     document.cookie = this._cookieNamePrefix + name + '=' + escape(value) + cookieExpire + cookiePath + cookieDomain + cookieSecure;
   };
 
-  UtmCookie.prototype.readCookie = function(name) {
+  T3UtmCookie.prototype.readCookie = function(name) {
     var c, ca, i, nameEQ;
     nameEQ = this._cookieNamePrefix + name + '=';
     ca = document.cookie.split(';');
@@ -57,11 +57,11 @@ UtmCookie = (function() {
     return null;
   };
 
-  UtmCookie.prototype.eraseCookie = function(name) {
+  T3UtmCookie.prototype.eraseCookie = function(name) {
     this.createCookie(name, '', -1, null, this._domain);
   };
 
-  UtmCookie.prototype.getParameterByName = function(name) {
+  T3UtmCookie.prototype.getParameterByName = function(name) {
     var regex, regexS, results;
     name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
     regexS = '[\\?&]' + name + '=([^&#]*)';
@@ -74,7 +74,7 @@ UtmCookie = (function() {
     }
   };
 
-  UtmCookie.prototype.additionalParamsPresentInUrl = function() {
+  T3UtmCookie.prototype.additionalParamsPresentInUrl = function() {
     var j, len, param, ref;
     ref = this._additionalParams;
     for (j = 0, len = ref.length; j < len; j++) {
@@ -86,7 +86,7 @@ UtmCookie = (function() {
     return false;
   };
 
-  UtmCookie.prototype.utmPresentInUrl = function() {
+  T3UtmCookie.prototype.utmPresentInUrl = function() {
     var j, len, param, ref;
     ref = this._utmParams;
     for (j = 0, len = ref.length; j < len; j++) {
@@ -98,11 +98,11 @@ UtmCookie = (function() {
     return false;
   };
 
-  UtmCookie.prototype.writeCookie = function(name, value) {
+  T3UtmCookie.prototype.writeCookie = function(name, value) {
     this.createCookie(name, value, this._cookieExpiryDays, null, this._domain);
   };
 
-  UtmCookie.prototype.writeAdditionalParams = function() {
+  T3UtmCookie.prototype.writeAdditionalParams = function() {
     var j, len, param, ref, value;
     ref = this._additionalParams;
     for (j = 0, len = ref.length; j < len; j++) {
@@ -112,7 +112,7 @@ UtmCookie = (function() {
     }
   };
 
-  UtmCookie.prototype.writeUtmCookieFromParams = function() {
+  T3UtmCookie.prototype.writeUtmCookieFromParams = function() {
     var j, len, param, ref, value;
     ref = this._utmParams;
     for (j = 0, len = ref.length; j < len; j++) {
@@ -122,7 +122,7 @@ UtmCookie = (function() {
     }
   };
 
-  UtmCookie.prototype.writeCookieOnce = function(name, value) {
+  T3UtmCookie.prototype.writeCookieOnce = function(name, value) {
     var existingValue;
     existingValue = this.readCookie(name);
     if (!existingValue) {
@@ -130,17 +130,17 @@ UtmCookie = (function() {
     }
   };
 
-  UtmCookie.prototype._sameDomainReferrer = function(referrer) {
+  T3UtmCookie.prototype._sameDomainReferrer = function(referrer) {
     var hostname;
     hostname = document.location.hostname;
     return referrer.indexOf(this._domain) > -1 || referrer.indexOf(hostname) > -1;
   };
 
-  UtmCookie.prototype._isInvalidReferrer = function(referrer) {
+  T3UtmCookie.prototype._isInvalidReferrer = function(referrer) {
     return referrer === '' || referrer === void 0;
   };
 
-  UtmCookie.prototype.writeInitialReferrer = function() {
+  T3UtmCookie.prototype.writeInitialReferrer = function() {
     var value;
     value = document.referrer;
     if (this._isInvalidReferrer(value)) {
@@ -149,7 +149,7 @@ UtmCookie = (function() {
     this.writeCookieOnce('referrer', value);
   };
 
-  UtmCookie.prototype.writeLastReferrer = function() {
+  T3UtmCookie.prototype.writeLastReferrer = function() {
     var value;
     value = document.referrer;
     if (!this._sameDomainReferrer(value)) {
@@ -160,7 +160,7 @@ UtmCookie = (function() {
     }
   };
 
-  UtmCookie.prototype.writeInitialLandingPageUrl = function() {
+  T3UtmCookie.prototype.writeInitialLandingPageUrl = function() {
     var value;
     value = this.cleanUrl();
     if (value) {
@@ -168,19 +168,19 @@ UtmCookie = (function() {
     }
   };
 
-  UtmCookie.prototype.initialReferrer = function() {
+  T3UtmCookie.prototype.initialReferrer = function() {
     return this.readCookie('referrer');
   };
 
-  UtmCookie.prototype.lastReferrer = function() {
+  T3UtmCookie.prototype.lastReferrer = function() {
     return this.readCookie('last_referrer');
   };
 
-  UtmCookie.prototype.initialLandingPageUrl = function() {
+  T3UtmCookie.prototype.initialLandingPageUrl = function() {
     return this.readCookie('initial_landing_page');
   };
 
-  UtmCookie.prototype.incrementVisitCount = function() {
+  T3UtmCookie.prototype.incrementVisitCount = function() {
     var cookieName, existingValue, newValue;
     cookieName = 'visits';
     existingValue = parseInt(this.readCookie(cookieName), 10);
@@ -193,11 +193,11 @@ UtmCookie = (function() {
     this.writeCookie(cookieName, newValue);
   };
 
-  UtmCookie.prototype.visits = function() {
+  T3UtmCookie.prototype.visits = function() {
     return this.readCookie('visits');
   };
 
-  UtmCookie.prototype.setCurrentSession = function() {
+  T3UtmCookie.prototype.setCurrentSession = function() {
     var cookieName, existingValue;
     cookieName = 'current_session';
     existingValue = this.readCookie(cookieName);
@@ -207,20 +207,20 @@ UtmCookie = (function() {
     }
   };
 
-  UtmCookie.prototype.cleanUrl = function() {
+  T3UtmCookie.prototype.cleanUrl = function() {
     var cleanSearch;
     cleanSearch = window.location.search.replace(/utm_[^&]+&?/g, '').replace(/&$/, '').replace(/^\?$/, '');
     return window.location.origin + window.location.pathname + cleanSearch + window.location.hash;
   };
 
-  return UtmCookie;
+  return T3UtmCookie;
 
 })();
 
-var UtmForm, _uf;
+var T3UtmForm, _uf;
 
-UtmForm = (function() {
-  function UtmForm(options) {
+T3UtmForm = (function() {
+  function T3UtmForm(options) {
     if (options == null) {
       options = {};
     }
@@ -237,7 +237,7 @@ UtmForm = (function() {
     this._visitsField = options.visits_field || 'VISITS';
     this._addToForm = options.add_to_form || 'all';
     this._formQuerySelector = options.form_query_selector || 'form';
-    this.utmCookie = new UtmCookie({
+    this.utmCookie = new T3UtmCookie({
       domain: options.domain,
       sessionLength: options.sessionLength,
       cookieExpiryDays: options.cookieExpiryDays,
@@ -248,7 +248,7 @@ UtmForm = (function() {
     }
   }
 
-  UtmForm.prototype.addAllFields = function() {
+  T3UtmForm.prototype.addAllFields = function() {
     var fieldName, param, ref, ref1;
     ref = this._utmParamsMap;
     for (param in ref) {
@@ -266,7 +266,7 @@ UtmForm = (function() {
     this.addFormElem(this._visitsField, this.utmCookie.visits());
   };
 
-  UtmForm.prototype.addFormElem = function(fieldName, fieldValue) {
+  T3UtmForm.prototype.addFormElem = function(fieldName, fieldValue) {
     var allForms, firstForm, form, i, len;
     if (fieldValue) {
       allForms = document.querySelectorAll(this._formQuerySelector);
@@ -284,7 +284,7 @@ UtmForm = (function() {
     }
   };
 
-  UtmForm.prototype.getFieldEl = function(fieldName, fieldValue) {
+  T3UtmForm.prototype.getFieldEl = function(fieldName, fieldValue) {
     var fieldEl;
     fieldEl = document.createElement('input');
     fieldEl.type = "hidden";
@@ -294,10 +294,10 @@ UtmForm = (function() {
     return fieldEl;
   };
 
-  return UtmForm;
+  return T3UtmForm;
 
 })();
 
 _uf = window._uf || {};
 
-window.UtmForm = new UtmForm(_uf);
+window.T3UtmForm = new T3UtmForm(_uf);

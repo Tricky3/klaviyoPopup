@@ -1,15 +1,15 @@
 <script type="text/javascript">
-  {% if customer or template == 'cart' %}
+  {%- if customer or template == 'cart' -%}
     var showPopupOnThisPage = false;
-  {% else %}
+  {%- else -%}
     var showPopupOnThisPage = true;
-  {% endif %}
+  {%- endif -%}
     $(window).load(function() {
       if ({{ settings.show_popup_on_mobile_device }} || !T3Core.IsMobileDevice()) {
         var options = {
-          {% assign first_visit = settings.modal_signup_first %}
-          {% assign total_visits = settings.modal_signup_total %}
-          Visits: [{{ first_visit }}{% for i in (1..total_visits) %}{% capture next_visit %}{{ first_visit | plus: i }}{% endcapture %},{{ next_visit }}{% endfor %}],
+          {%- assign first_visit = settings.modal_signup_first -%}
+          {%- assign total_visits = settings.modal_signup_total -%}
+          Visits: [{{ first_visit }}{%- for i in (1..total_visits) -%}{%- capture next_visit -%}{{ first_visit | plus: i }}{%- endcapture -%},{{ next_visit }}{%- endfor -%}],
           Delay: {{ settings.modal_signup_delay_time }},
           PageViewNumber: {{ settings.modal_signup_page_view }},
           ShowPopupOnCurrentPage: showPopupOnThisPage,

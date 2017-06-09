@@ -1,7 +1,7 @@
-{% comment %}
+{%- comment -%}
   Take your Klaviyo subscribe form as generated from within your account:
   [form is t3-modified html5 - copy and paste values for best results:]
-{% endcomment %}
+{%- endcomment -%}
 <div class="modalHolder">
   <div class="ycenter">
     <div class="xcenter">
@@ -10,7 +10,7 @@
           <fieldset>
             <legend>{{ settings.signup_title }}</legend>
             <label for="k_id_email">Email:</label><br>
-      			<input class="klaviyo-field" type="email" name="email" id="k_id_email" placeholder="Your Email Address"{% if customer %} value="{{ customer.email }}"{% endif %} required/><br>
+      			<input class="klaviyo-field" type="email" name="email" id="k_id_email" placeholder="Your Email Address"{% if customer %} value="{{ customer.email }}"{% endif %} required>
             <input type="submit" value="Sign Up" class="awesome">
       			<input type="hidden" name="g" value="[KlaviyoListId]" class="klaviyo-field">
           </fieldset>
@@ -24,7 +24,7 @@
     </div>
   </div>
 </div>
-{% comment %}
+{%- comment -%}
   External Trigger if you want one on the page.
-{% endcomment %}
+{%- endcomment -%}
 <a href="http://" class="popupTrigger">{{ settings.popup_signup_trigger }}</a>

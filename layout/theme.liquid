@@ -10,13 +10,5 @@
 {%- comment -%}
   end of the body
 {%- endcomment -%}
-{%- unless settings.modal_signup_first == '0' -%}
-  {%- include 'tricky3-klaviyo-popup' -%}
-  {%- include 'tricky3-klaviyo-script' -%}
-{%- endunless -%}
-<script src="https://cdn.tricky3.io/t3core/tricky3.core.js"></script>
-<script src="https://cdn.tricky3.io/klaviyoPopup/assets/tricky3.klaviyo.pack.min.js"></script>
-<script type="text/javascript">
-  var _uf = _uf || {};
-  _uf.domain = "{{ shop.domain }}";
-</script>
+{%- include 'tricky3-klaviyo-popup' -%}
+{%- include 'tricky3-klaviyo-script' -%}

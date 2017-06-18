@@ -22,11 +22,11 @@ __Includes:__
   - "Success"
   - "Error"
   
-- Field(s) validations:
+- Field validation:
   - Klaviyo Modal Popup Signup will make use of "bvalidator plugin" for validations.
   - Data attributes should be added to the field(s) that you want to validate:
     - `data-bvalidator="required,email"`
     - `data-bvalidator-msg="The email is required"`
       - _Optional if you want to configure error message that will be displayed by bValidator plugin. For more info: [see here](http://bojanmauser.from.hr/bvalidator/#inputerrmsgs)_
 
-- Integrated UTM Trackers which are added to the forms dynamically, check theme.liquid for more info
+- UTM, referrer, landing page, and visitor info [courtesy of https://github.com/medius/utm_form]

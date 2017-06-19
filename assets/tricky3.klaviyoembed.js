@@ -35,9 +35,10 @@ var KlaviyoEmbedFormCallBacks = {
 	Success:function(data, wrapper){
 		T3Core.TrackUserSignUpEmbed(wrapper);
 		T3Core.TrackFacebookCompleteRegistration({
-          content_name: wrapper.attr('data-ga-action')
-        });
-        $('.klaviyo_messages .success_message', wrapper).text('Thank you!').show();
+      content_name: wrapper.attr('data-ga-action')
+    });
+    var successMessage = _t3klaviyoembed && _t3klaviyoembed.success_message ? _t3klaviyoembed.success_message : 'Thank you!';
+    $('.klaviyo_messages .success_message', wrapper).text(successMessage).show();
 	},
 	Error:function(data, wrapper){
 		$('.klaviyo_messages .error_message',wrapper).html('<p>'+data.errors[0]+'</p>').show();

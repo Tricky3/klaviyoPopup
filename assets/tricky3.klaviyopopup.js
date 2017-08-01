@@ -33,7 +33,8 @@
             },
             Messages: {
                 Success: 'Thank you!'
-            }
+            },
+            IsModal: false
         };
 
         $.extend(settings, options || {});
@@ -58,7 +59,7 @@
         var KP = {
             Initialize: function() {
                 this.Hide(false);
-                this.ReadAndSetupCookieValues();
+                !settings.IsModal ? this.ReadAndSetupCookieValues() : this.SetupModalPopup();
                 this.InitCustomEvents();
             },
 			InitDefaultKlaviyoCookies:function(){
@@ -86,18 +87,20 @@
                     });
                 }
 
-                $(document).keydown(function(e) {
-                    keycode = e == null ? event.keyCode : e.which;
-                    if (keycode == 27) {
-                        KP.Hide(true);
-                    }
-                });
+                if(!settings.IsModal){
+                    $(document).keydown(function(e) {
+                        keycode = e == null ? event.keyCode : e.which;
+                        if (keycode == 27) {
+                            KP.Hide(true);
+                        }
+                    });
 
-                _Globs.MainWrapper.click(function() {
-                    if ($(this).hasClass('modalize')) {
-                        KP.Hide(true);
-                    }
-                });
+                    _Globs.MainWrapper.click(function() {
+                        if ($(this).hasClass('modalize')) {
+                            KP.Hide(true);
+                        }
+                    });
+                }
 
                 $(settings.InnerWrapper, _Globs.MainWrapper).click(function(e) {
                     e.stopPropagation();
@@ -106,6 +109,14 @@
             Hide: function(trackEvent) {
                 _Globs.MainWrapper.removeClass('modalize');
                 KP.CallBackHandler.OnClosed(trackEvent);
+            },
+            SetupModalPopup: function(){
+                var kpCookieValue = this.ReadJsonFromCookie(settings.CookieName);
+                if (kpCookieValue == null){
+                    this.Show();
+                }else{
+                    this.Hide();
+                }
             },
             ReadAndSetupCookieValues: function() {
                 var sessionCookie = T3Core.CookieManager.ReadCookie(settings.SessionCookieName);

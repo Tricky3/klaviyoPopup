@@ -3,25 +3,21 @@
   [form is t3-modified html5 - copy and paste values for best results:]
 {%- endcomment -%}
 <div class="modalHolder">
-  <div class="ycenter">
-    <div class="xcenter">
-      <div class="modal">
-        <form action="//manage.kmail-lists.com/subscriptions/subscribe" data-ajax-submit="//manage.kmail-lists.com/ajax/subscriptions/subscribe" method="GET" target="_blank" novalidate="novalidate" class="subForm track">
-          <fieldset>
-            <legend>{{ settings.modal_title }}</legend>
-            <label for="k_id_email">Email:</label><br>
-            <input class="klaviyo-field" type="email" name="email" id="k_id_email" placeholder="Your Email Address"{% if customer %} value="{{ customer.email }}"{% endif %} required>
-            <input type="submit" value="{{ settings.modal_submit_text }}" class="awesome">
-            <input type="hidden" name="g" value="[KlaviyoListId]" class="klaviyo-field">
-          </fieldset>
-          <div class="klaviyo_messages">
-            <div class="success_message" style="display:none;"></div>
-            <div class="error_message" style="display:none;"></div>
-          </div>
-        </form>
-        <a class="popupClose"></a>
+  <div class="modal">
+    <form action="//manage.kmail-lists.com/subscriptions/subscribe" data-ajax-submit="//manage.kmail-lists.com/ajax/subscriptions/subscribe" method="GET" target="_blank" novalidate="novalidate" class="track">
+      <fieldset>
+        <legend>{{ settings.modal_title }}</legend>
+        <label for="k_id_email">Email:</label><br>
+        <input class="klaviyo-field" type="email" name="email" id="k_id_email" placeholder="Your Email Address"{% if customer %} value="{{ customer.email }}"{% endif %} required>
+        <input type="submit" value="{{ settings.modal_submit_text }}" class="awesome">
+        <input type="hidden" name="g" value="[KlaviyoListId]" class="klaviyo-field">
+      </fieldset>
+      <div class="klaviyo_messages">
+        <div class="success_message" style="display:none;"></div>
+        <div class="error_message" style="display:none;"></div>
       </div>
-    </div>
+    </form>
+    <a class="popupClose"></a>
   </div>
 </div>
 {%- comment -%}

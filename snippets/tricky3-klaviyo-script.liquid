@@ -52,11 +52,13 @@
           },
           OnDisplayed: function() {
             T3Core.TrackUserSignUp(KlaviyoPopupTrackers.Category, KlaviyoPopupTrackers.Actions.OnShow);
+            $('html').css('overflow', 'hidden'); // prevent body scrollbar
           },
           OnClosed: function(trackEventIfUserHasNotSignedUp) {
             if (trackEventIfUserHasNotSignedUp) {
               T3Core.TrackUserSignUp(KlaviyoPopupTrackers.Category, KlaviyoPopupTrackers.Actions.ClosedWithoutSignup);
             }
+            $('html').css('overflow', 'auto');
           },
           OnFormSubmitted: function() {
             T3Core.TrackUserSignUp(KlaviyoPopupTrackers.Category, KlaviyoPopupTrackers.Actions.FormSubmitted);

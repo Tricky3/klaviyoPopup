@@ -34,7 +34,7 @@
             Messages: {
                 Success: 'Thank you!'
             },
-            IsModal: false
+            IsBlocking: false
         };
 
         $.extend(settings, options || {});
@@ -59,7 +59,7 @@
         var KP = {
             Initialize: function() {
                 this.Hide(false);
-                !settings.IsModal ? this.ReadAndSetupCookieValues() : this.SetupModalPopup();
+                !settings.IsBlocking ? this.ReadAndSetupCookieValues() : this.SetupModalPopup();
                 this.InitCustomEvents();
             },
 			InitDefaultKlaviyoCookies:function(){
@@ -87,7 +87,7 @@
                     });
                 }
 
-                if(!settings.IsModal){
+                if(!settings.IsBlocking){
                     $(document).keydown(function(e) {
                         keycode = e == null ? event.keyCode : e.which;
                         if (keycode == 27) {

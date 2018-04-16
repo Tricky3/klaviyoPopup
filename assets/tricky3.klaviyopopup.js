@@ -62,12 +62,12 @@
                 !settings.IsBlocking ? this.ReadAndSetupCookieValues() : this.SetupModalPopup();
                 this.InitCustomEvents();
             },
-			InitDefaultKlaviyoCookies:function(){
-				var klaPagesCookie = "klaPages";
-				var klaPagesCookieValue = parseInt(T3Core.CookieManager.ReadCookie(klaPagesCookie), 10);
-				klaPagesCookieValue = isNaN(klaPagesCookieValue) ? 1 : klaPagesCookieValue + 1;
-				T3Core.CookieManager.CreateCookie(klaPagesCookie, klaPagesCookieValue, 365);
-			},
+            InitDefaultKlaviyoCookies:function(){
+                var klaPagesCookie = "klaPages";
+                var klaPagesCookieValue = parseInt(T3Core.CookieManager.ReadCookie(klaPagesCookie), 10);
+                klaPagesCookieValue = isNaN(klaPagesCookieValue) ? 1 : klaPagesCookieValue + 1;
+                T3Core.CookieManager.CreateCookie(klaPagesCookie, klaPagesCookieValue, 365);
+            },
             InitCustomEvents: function() {
                 for (var i = 0; i < settings.CloseSelectors.length; i++) {
                     var element = $(settings.CloseSelectors[i]);
@@ -285,17 +285,17 @@
                 settings.CallBacks.OnError && settings.CallBacks.OnError(data);
             },
             OnSuccess: function(data) {
-				if (_learnq) {
-				  var emailVal = $('input[name="email"]', _Globs.MainWrapper).val();
-				  var source = $('input[name="$source"]', _Globs.MainWrapper).length ? $('input[name="$source"]', _Globs.MainWrapper).val() : '';
-				  _learnq.push(['identify', {
-					  $email: emailVal,
-					  $source: source
-				  }]);
-				  
-				  _learnq.push(["trackActivity"]);
-				}
-				
+                if (_learnq) {
+                    var emailVal = $('input[name="email"]', _Globs.MainWrapper).val();
+                    var source = $('input[name="$source"]', _Globs.MainWrapper).length ? $('input[name="$source"]', _Globs.MainWrapper).val() : '';
+                    _learnq.push(['identify', {
+                        $email: emailVal,
+                        $source: source
+                    }]);
+
+                    _learnq.push(["trackActivity"]);
+                }
+
                 settings.CallBacks.OnSuccess && settings.CallBacks.OnSuccess(data, _Globs.MainWrapper);
             },
             BeforeSubmit: function() {
@@ -313,7 +313,7 @@
             } else {
                 KP.Initialize();
             }
-			KP.InitDefaultKlaviyoCookies();
+            KP.InitDefaultKlaviyoCookies();
         })();
     };
 

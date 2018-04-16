@@ -44,17 +44,17 @@ var KlaviyoEmbedFormCallBacks = {
         });
         var successMessage = typeof(_t3klaviyoembed) !== "undefined" && _t3klaviyoembed.success_message ? _t3klaviyoembed.success_message : 'Thank you!';
         $('.klaviyo_messages .success_message', wrapper).text(successMessage).show();
-		
-		if (_learnq) {
-		  var emailVal = $('input[name="email"]', wrapper).val();
-		  var source = $('input[name="$source"]', wrapper).length ? $('input[name="$source"]', wrapper).val() : '';
-		  _learnq.push(['identify', {
-			  $email: emailVal,
-			  $source: source
-		  }]);
 
-		  _learnq.push(["trackActivity"]);
-		}
+        if (_learnq) {
+            var emailVal = $('input[name="email"]', wrapper).val();
+            var source = $('input[name="$source"]', wrapper).length ? $('input[name="$source"]', wrapper).val() : '';
+            _learnq.push(['identify', {
+                $email: emailVal,
+                $source: source
+            }]);
+
+            _learnq.push(["trackActivity"]);
+        }
     },
     Error: function(data, wrapper) {
         $('.klaviyo_messages .error_message', wrapper).html('<p>' + data.errors[0] + '</p>').show();

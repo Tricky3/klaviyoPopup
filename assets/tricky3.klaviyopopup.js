@@ -285,15 +285,15 @@
                 settings.CallBacks.OnError && settings.CallBacks.OnError(data);
             },
             OnSuccess: function(data) {
-				if (_learnq) {
+				if (window._learnq) {
 				  var emailVal = $('input[name="email"]', _Globs.MainWrapper).val();
 				  var source = $('input[name="$source"]', _Globs.MainWrapper).length ? $('input[name="$source"]', _Globs.MainWrapper).val() : '';
-				  _learnq.push(['identify', {
+				  window._learnq.push(['identify', {
 					  $email: emailVal,
 					  $source: source
 				  }]);
 				  
-				  _learnq.push(["trackActivity"]);
+				  window._learnq.push(["trackActivity"]);
 				}
 				
                 settings.CallBacks.OnSuccess && settings.CallBacks.OnSuccess(data, _Globs.MainWrapper);

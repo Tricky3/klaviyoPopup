@@ -222,7 +222,14 @@
                         var url = form.attr(settings.AjaxSubmitAttr);
                         var utcOffset = (new Date).getTimezoneOffset() / -60;
                         $('.timeOffset', form).length ? $('.timeOffset', form).val(utcOffset) : form.append('<input type="hidden" value="' + utcOffset + '" class="timeOffset klaviyo-field" name="$timezone_offset"/>');
-                        var formData = decodeURIComponent(form.find('.klaviyo-field').serialize());
+                        var formData = [];
+                        var klaviyoFields = $('.klaviyo-field', form);
+                        klaviyoFields.each(function(){
+                            formData.push($(this).attr('name')+'='+ encodeURIComponent($(this).val().replace(/%3A/g, ":")));
+                        });
+                        
+                        formData = formData.join('&');
+
                         var customPropertiesNames = $(this).find('.klaviyo-custom-property').map(function() {
                             return $(this).attr('name');
                         }).get();
@@ -285,16 +292,19 @@
                 settings.CallBacks.OnError && settings.CallBacks.OnError(data);
             },
             OnSuccess: function(data) {
-				if (window._learnq) {
-				  var emailVal = $('input[name="email"]', _Globs.MainWrapper).val();
-				  var source = $('input[name="$source"]', _Globs.MainWrapper).length ? $('input[name="$source"]', _Globs.MainWrapper).val() : '';
-				  window._learnq.push(['identify', {
-					  $email: emailVal,
-					  $source: source
-				  }]);
-				  
-				  window._learnq.push(["trackActivity"]);
-				}
+                if (window._learnq) {
+
+                    var emailVal = $('input[name="email"]', _Globs.MainWrapper).val();
+                    var source = $('input[name="$source"]', _Globs.MainWrapper).length ? $('input[name="$source"]', _Globs.MainWrapper).val() : '';
+
+                    // console.log(window._learnq.push(['identify', { $email: emailVal, $source: source }]));
+
+                    window._learnq.push(['identify', {
+                        $email: emailVal,
+                        $source: source
+                    }]);
+                    window._learnq.push(["trackActivity"]);
+                }
 
                 settings.CallBacks.OnSuccess && settings.CallBacks.OnSuccess(data, _Globs.MainWrapper);
             },

@@ -15,7 +15,14 @@ $(function() {
                 var url = form.attr('data-ajax-submit');
                 var utcOffset = (new Date).getTimezoneOffset() / -60;
                 $('.timeOffset', form).length ? $('.timeOffset', form).val(utcOffset) : form.append('<input type="hidden" value="' + utcOffset + '" class="timeOffset klaviyo-field" name="$timezone_offset"/>');
-                var formData = decodeURIComponent(form.find('.klaviyo-field').serialize());
+                var formData = [];
+				var klaviyoFields = $('.klaviyo-field', form);
+				klaviyoFields.each(function(){
+					formData.push($(this).attr('name')+'='+ encodeURIComponent($(this).val().replace(/%3A/g, ":")));
+				});
+		
+				formData = formData.join('&');
+				
                 var customPropertiesNames = form.find('.klaviyo-custom-property').map(function() {
                     return $(this).attr('name');
                 }).get();

@@ -1,5 +1,5 @@
 (function ($) {
-    var klaviyoCPPopup = function (element, options) {
+    var klaviyoPolicyPopup = function (element, options) {
         var kPopup = this;
         var settings = {
             CookieName: 'KlaviyoPopup',
@@ -40,7 +40,8 @@
                 Success: 'Thank you!'
             },
             IsBlocking: false,
-            ForceShow: false
+            ForceShow: false,
+            HideCookiePolicyMessageIfNeeded: false
         };
         $.extend(settings, options || {});
         var _Globs = {
@@ -61,33 +62,48 @@
         };
         var KP = {
             Load: function () {
-                T3Core.Debug('Loading klaviyo popup.');
                 KP.SetupPolicyCookie();
+                KP.FirstTimeLoaded = !KP.PolicyCookieAccepted;
+                T3Core.Debug("KPP: first time loaded " + KP.FirstTimeLoaded + ".");
                 if (KP.PolicyCookieAccepted) {
                     // Initializing only if policy has been accepted...
-                    T3Core.Debug('Cookie policy accepted, initializing.');
+                    T3Core.Debug('KPP: cookie policy accepted.');
+                    settings.HideCookiePolicyMessageIfNeeded && KP.HideCookiePolicyMessageIfNeeded();
                     KP.Initialize();
-                    KP.InitDefaultKlaviyoCookies();
                 }
                 else {
                     KP.Show();
                 }
                 var signupkey = T3Core.GetQueryStringByKey(settings.SignupKey);
-                if (signupkey !== '') {
-                    if (signupkey == 1) {
-                        KP.Show();
-                    }
+                if (signupkey !== '' && signupkey == 1) {
+                    T3Core.Debug('KPP: sign up key found, forcing show.');
+                    KP.Show();
                 }
                 else {
                     settings.ForceShow && KP.Show();
                 }
+                KP.InitCustomEvents();
+            },
+            HideCookiePolicyMessageIfNeeded: function () {
+                T3Core.Debug('KPP: hiding cookie policy message.');
+                $('.cookie-policy').css('display', 'none');
+            },
+            GetPolicyCookie: function () {
+                return T3Core.CookieManager.ReadCookie(settings.PolicyCookieName);
             },
             SetupPolicyCookie: function () {
                 KP.AddPolicyCookieIfUserHasAlreadySignedUp();
-                var policyCookie = T3Core.CookieManager.ReadCookie(settings.PolicyCookieName);
-                if (policyCookie) {
+                if (KP.GetPolicyCookie()) {
                     KP.PolicyCookieAccepted = true;
-                    T3Core.Debug('Cookie policy is accepted.');
+                }
+            },
+            AddPolicyCookie: function () {
+                if (!KP.GetPolicyCookie()) {
+                    T3Core.Debug('KPP: added cookie policy.');
+                    T3Core.CookieManager.CreateCookie(settings.PolicyCookieName, 1, 30);
+                }
+                else {
+                    T3Core.Debug('KPP: cookie policy already exist.');
                 }
             },
             AddPolicyCookieIfUserHasAlreadySignedUp: function () {
@@ -95,10 +111,10 @@
                 if (cookieObj !== null) {
                     try {
                         var obj = JSON.parse(cookieObj);
-                        if (obj.Status && obj.Status === _Globs.CookiesValues.HasSubmitted) {
+                        if (obj.Status && obj.Status === _Globs.CookiesValues.HasSubmitted && !KP.GetPolicyCookie()) {
                             // this guy has submitted...
-                            T3Core.Debug('User has subscribed on klaviyo popup before. Adding cookie policy.');
-                            T3Core.CookieManager.CreateCookie(settings.PolicyCookieName, 1, 30);
+                            T3Core.Debug('KPP: user has subscribed on klaviyo popup before. Adding cookie policy.');
+                            KP.AddPolicyCookie();
                         }
                     }
                     catch (e) {
@@ -106,10 +122,16 @@
                 }
             },
             Initialize: function () {
-                KP.Initialized = true;
-                this.Hide(false);
-                !settings.IsBlocking ? this.ReadAndSetupCookieValues() : this.SetupModalPopup();
-                this.InitCustomEvents();
+                if (!KP.Initialized) {
+                    T3Core.Debug('KPP: initializing.');
+                    KP.InitDefaultKlaviyoCookies();
+                    KP.Initialized = true;
+                    // this.Hide(false);
+                    !settings.IsBlocking ? this.ReadAndSetupCookieValues() : this.SetupModalPopup();
+                }
+                else {
+                    T3Core.Debug('KPP: is already initialized.');
+                }
             },
             InitDefaultKlaviyoCookies: function () {
                 var klaPagesCookie = "klaPages";
@@ -117,11 +139,17 @@
                 klaPagesCookieValue = isNaN(klaPagesCookieValue) ? 1 : klaPagesCookieValue + 1;
                 T3Core.CookieManager.CreateCookie(klaPagesCookie, klaPagesCookieValue, 365);
             },
+            InitializeAndAddPolicyCookie: function () {
+                KP.AddPolicyCookie();
+                KP.Initialize();
+            },
             InitCustomEvents: function () {
                 for (var i = 0; i < settings.CloseSelectors.length; i++) {
                     var element_1 = $(settings.CloseSelectors[i]);
                     element_1.click(function (e) {
                         e.preventDefault();
+                        T3Core.Debug("KPP: close button clicked.");
+                        KP.InitializeAndAddPolicyCookie();
                         KP.Hide(true);
                     });
                 }
@@ -129,6 +157,8 @@
                     var element_2 = $(settings.ShowSelectors[i]);
                     element_2.click(function (e) {
                         e.preventDefault();
+                        T3Core.Debug("KPP: show button clicked.");
+                        KP.InitializeAndAddPolicyCookie();
                         KP.Show(true);
                     });
                 }
@@ -136,27 +166,38 @@
                     $(document).on('keydown', function (e) {
                         var keycode = e == null ? e.keyCode : e.which;
                         if (keycode == 27) {
+                            T3Core.Debug("KPP: escape key pressed.");
+                            KP.InitializeAndAddPolicyCookie();
                             KP.Hide(true);
                         }
                     });
                     _Globs.MainWrapper.click(function () {
-                        if ($(this).hasClass('modalize')) {
-                            KP.Hide(true);
-                        }
+                        T3Core.Debug("KPP: wrapper clicked.");
+                        KP.InitializeAndAddPolicyCookie();
+                        $(this).hasClass('modalize') && KP.Hide(true);
                     });
                 }
                 $(settings.InnerWrapper, _Globs.MainWrapper).on('click', function (e) {
                     var targetElem = $(e.target);
-                    var needToStopPropagation = targetElem.is('input') || targetElem.is('a') || targetElem.is('button');
-                    needToStopPropagation && e.stopPropagation();
+                    var isFormElements = targetElem.is('input') || targetElem.is('button');
+                    var isLink = targetElem.is('a');
+                    if (isLink && targetElem.hasClass('privacy-learn')) {
+                        e.stopPropagation();
+                        T3Core.Debug("KPP: privacy learn clicked, no cookies will be added.");
+                    }
+                    else if (isFormElements) {
+                        e.stopPropagation();
+                        T3Core.Debug("KPP: form element clicked, propagation stopped.");
+                        KP.InitializeAndAddPolicyCookie();
+                    }
+                    else {
+                        T3Core.Debug("KPP: propagating click event to main wrapper.");
+                    }
                 });
-            },
-            Hide: function (trackEvent) {
-                _Globs.MainWrapper.removeClass('modalize');
-                KP["CallBackHandler"].OnClosed(trackEvent);
             },
             SetupModalPopup: function () {
                 var kpCookieValue = this.ReadJsonFromCookie(settings.CookieName);
+                T3Core.Debug("KPP: setupModalPopup fired " + kpCookieValue);
                 if (kpCookieValue === null) {
                     this.Show();
                 }
@@ -241,19 +282,41 @@
                     // Visiting number is bigger, nothing to do..here...
                 }
                 obj.ShowPopup = obj.NeedToShowPopupOnCurrentVisit && obj.NeedToShowPopupOnCurrentPageView;
-                if (obj.ShowPopup) {
+                T3Core.Debug("KPP: processCookiesValuesAndShowPopupIfNeeded, show popup: " + obj.ShowPopup + ", first time loaded: " + KP.FirstTimeLoaded);
+                if (obj.ShowPopup && !KP.FirstTimeLoaded) {
                     this.Show(false);
                 }
             },
             Show: function (clickEvent) {
                 if (clickEvent === void 0) { clickEvent = null; }
-                var delay = clickEvent ? 1000 : settings.Delay;
-                setTimeout(function () {
-                    _Globs.MainWrapper.addClass('modalize');
-                    KP["CallBackHandler"].OnDisplayed();
-                    KP.InitBValidator();
-                    KP.InitAjaxSubmit();
-                }, delay);
+                if (!KP.IsShown) {
+                    T3Core.Debug("KPP: show fired.");
+                    KP.IsShown = true;
+                    var delay = clickEvent ? 1000 : settings.Delay;
+                    setTimeout(function () {
+                        _Globs.MainWrapper.addClass('modalize');
+                        KP["CallBackHandler"].OnDisplayed();
+                        if (!KP.SubmitBinded) {
+                            KP.SubmitBinded = true;
+                            KP.InitBValidator();
+                            KP.InitAjaxSubmit();
+                        }
+                    }, delay);
+                }
+                else {
+                    T3Core.Debug("KPP: show fired: already visible.");
+                }
+            },
+            Hide: function (trackEvent) {
+                if (KP.IsShown) {
+                    T3Core.Debug("KPP: hide fired.");
+                    _Globs.MainWrapper.removeClass('modalize');
+                    KP["CallBackHandler"].OnClosed(trackEvent);
+                    KP.IsShown = false;
+                }
+                else {
+                    T3Core.Debug("KPP: hide fired: already hidden.");
+                }
             },
             InitBValidator: function () {
                 _Globs.KForm.bValidator(settings.BValidatorOptions);
@@ -318,7 +381,9 @@
             UserHasSignedUp: false,
             IsShown: false,
             PolicyCookieAccepted: false,
-            Initialized: false
+            Initialized: false,
+            FirstTimeLoaded: false,
+            SubmitBinded: false
         };
         KP["CallBackHandler"] = {
             OnClosed: function (trackEvent) {
@@ -356,11 +421,10 @@
         return {
             show: KP.Show,
             hide: KP.Hide,
-            cookiePolicyAccepted: KP.PolicyCookieAccepted,
-            userHasSignedUp: KP.UserHasSignedUp
+            cookiePolicyAccepted: KP.PolicyCookieAccepted
         };
     };
-    $.fn.KlaviyoCPPopup = function (options) {
-        return klaviyoCPPopup(this, options);
+    $.fn.KlaviyoPolicyPopup = function (options) {
+        return klaviyoPolicyPopup(this, options);
     };
 })(jQuery);
